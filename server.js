@@ -4,6 +4,9 @@ var ejs=require("ejs");
 var path=require("path");
 var expressLayout=require("express-ejs-layouts");
 var PORT=process.env.PORT || 3300;
+
+
+app.use(express.static("public"));
 app.get("/",function(req,res){
 	res.render("home");
 });
