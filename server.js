@@ -9,7 +9,7 @@ var flash=require("express-flash");
 var MongoDbStore=require("connect-mongo")(session);
 var passport=require("passport");
 var connection=mongoose.connection;
-
+var Emitter=require("events");
 
 
 
@@ -19,7 +19,9 @@ let mongoStore=new MongoDbStore({
 	collection:"sessions"
 });
 
-
+//event emitter
+var eventEmitter=new Emitter();
+app.set("eventEmitter",eventEmitter);
 //session config
 app.use(session({
 	 secret:"process.env.secret",
@@ -87,6 +89,21 @@ require("./routes/web")(app);
 
 
 
-app.listen(PORT,function(){
+var server=app.listen(PORT,function(){
 	console.log("Listening on port 3300");
+});
+//socket
+var io=require("socket.io")(server);
+io.on("connection",function(socket ){
+	//join 
+	socket.on("join",function(orderId){
+		socket.join(orderId); 
+	});
+})
+eventEmitter.on("orderUpdated",function(data){
+	io.to(`order_$({data.id}`).emit("orderUpdated",data);
+})
+
+eventEmitter.on("orderPlaced",function(data){
+	io.to("adminRoom").emit("orderPlaced",data)
 })

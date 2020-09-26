@@ -2,6 +2,10 @@ var User=require("../../models/user");
 const bcrypt=require("bcrypt");
 var passport=require("passport");
 function authController(){
+	
+	var _getRedirectUrl=function(req){
+		return req.user.role==="admin"?"/admin/orders":"/customer/orders";
+	}
 	//factory functions CRUD	
 	return{
 		login:function(req,res){
@@ -22,7 +26,8 @@ function authController(){
 					 req.flash("error",info.message)
 					 return next(err)
 				 }
-				 return res.redirect("/");
+				 
+				 return res.redirect(_getRedirectUrl(req));
 			 })
 		 })	(req,res,next)
 		},
