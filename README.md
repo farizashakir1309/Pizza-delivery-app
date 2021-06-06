@@ -1,5 +1,5 @@
-<h1> Realtime pizza order tracker app </h1>
-This project is a  simple web application project to order pizza, track order history and get realtime notifications about pizza status.This is client as well as admin friendly. 
+<h1> Realtime pizza delivery app </h1>
+This project is a  simple web application project to order pizza, track order history and get realtime notifications about pizza status.
 The server was created on nodejs . 
 <h2>Technical Requirements : </h2>
 <ul>
